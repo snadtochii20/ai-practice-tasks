@@ -1,0 +1,29 @@
+services:
+  app:
+    build: .
+    container_name: node_auth_app
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      JWT_SECRET: secret_key_for_jwt
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: app_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: app_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
